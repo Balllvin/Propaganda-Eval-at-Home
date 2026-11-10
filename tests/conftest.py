@@ -37,7 +37,7 @@ def model_reply(prompt: str) -> dict:
 
 class Server:
     def __init__(self, mode: str = "model"):
-        self.mode, self.bodies, self.fail_first = mode, [], 0
+        self.mode, self.bodies, self.auth, self.fail_first = mode, [], [], 0
         outer = self
 
         class H(BaseHTTPRequestHandler):
@@ -58,6 +58,7 @@ class Server:
             def do_POST(self):
                 body = json.loads(self.rfile.read(int(self.headers["Content-Length"])))
                 outer.bodies.append(body)
+                outer.auth.append(self.headers.get("Authorization"))
                 if outer.fail_first > 0:
                     outer.fail_first -= 1
                     self.send_response(503)

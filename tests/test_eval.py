@@ -241,3 +241,33 @@ def test_example_configs_parse():
     for f in files:
         cfg = cli.load_config(f)
         assert "model" in cfg and "run" in cfg, f
+
+
+# ---- which key goes to which judge host -------------------------------------------------------------------------------
+
+def test_xai_key_default_only_for_api_x_ai():
+    assert J.judge_key_env("https://api.x.ai/v1", None) == "XAI_API_KEY"
+    assert J.judge_key_env("https://api.x.ai.evil.example/v1", None) == ""
+    assert J.judge_key_env("https://openrouter.ai/api/v1", None) == ""
+    assert J.judge_key_env("https://openrouter.ai/api/v1", "OPENROUTER_API_KEY") == "OPENROUTER_API_KEY"
+
+
+def _paid_judge(tmp_path, dataset, model_server, judge_server, monkeypatch, extra):
+    _generated(tmp_path, dataset, model_server)
+    monkeypatch.setenv("XAI_API_KEY", "xai-secret-should-not-leak")
+    monkeypatch.setattr(J, "is_local", lambda url: False)  # treat the fake host as another paid provider
+    return run(base(tmp_path, dataset) + ["judge", "--label", "x", "--judge-url", judge_server.url + "/v1",
+                                          "--spend", "--max-usd", "1"] + extra)
+
+
+def test_other_host_without_key_env_sends_no_key(tmp_path, dataset, model_server, judge_server, monkeypatch, capsys):
+    assert _paid_judge(tmp_path, dataset, model_server, judge_server, monkeypatch, []) == 0
+    assert judge_server.auth and all(h is None for h in judge_server.auth)
+    assert "sending no key to 127.0.0.1" in capsys.readouterr().err
+
+
+def test_other_host_with_explicit_key_env(tmp_path, dataset, model_server, judge_server, monkeypatch, capsys):
+    monkeypatch.setenv("OTHER_JUDGE_KEY", "other-key")
+    assert _paid_judge(tmp_path, dataset, model_server, judge_server, monkeypatch, ["--judge-key-env", "OTHER_JUDGE_KEY"]) == 0
+    assert judge_server.auth and all(h == "Bearer other-key" for h in judge_server.auth)
+    assert "the key in OTHER_JUDGE_KEY to 127.0.0.1" in capsys.readouterr().err

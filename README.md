@@ -117,6 +117,8 @@ flight, so it is not passed. Spend is logged to `judge_spend.jsonl`. Judging all
 $17.90 to $19.86 per model at $2 per million input tokens and $6 per million output tokens (xAI price list,
 2026-11-09). Long answers cost more. Check the current price before a big run.
 
+`XAI_API_KEY` is sent only when the judge host is exactly `api.x.ai`. Any other host gets no key unless you name one with `--judge-key-env` (or `key_env` under `[judge]`); the tool prints which key goes to which host.
+
 Any OpenAI-compatible judge also works: `--judge-url`, `--judge-model`, `--judge-key-env`, and
 `--judge-price IN OUT` (USD per million tokens) for a paid one. A judge on localhost is free and needs no
 `--spend`. **Scores from any judge other than grok-4.7 are not comparable** with the Nous leaderboard, the reference

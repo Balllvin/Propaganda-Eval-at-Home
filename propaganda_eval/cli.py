@@ -170,10 +170,14 @@ def main(argv: list[str] | None = None) -> int:
         if not decision["go"]:
             show({"plan_only": True, "to_spend": "add --spend --max-usd N (a hard cap)"})
             return 2
-        key_env = pick(a.judge_key_env, jc, "key_env", "" if decision["free"] else "XAI_API_KEY")
+        key_env = J.judge_key_env(url, pick(a.judge_key_env, jc, "key_env"))
         key = os.environ.get(key_env, "") if key_env else ""
         if key_env and not key:
             raise D.EvalError(f"environment variable {key_env} is empty")
+        host = J.host(url)
+        print(f"judge: sending {'the key in ' + key_env if key_env else 'no key'} to {host}", file=sys.stderr)
+        if not key_env and not decision["free"]:
+            warn(f"no key sent to {host}; give --judge-key-env NAME if it needs one")
         budget = None if decision["free"] else J.Budget(cap, price, out / label / profile / "judge_spend.jsonl")
         call = J.openai_judge(url, model, key, budget)
         for d in dirs:

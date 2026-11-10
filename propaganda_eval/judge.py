@@ -12,6 +12,7 @@ import concurrent.futures as cf
 import json
 import threading
 import time
+import urllib.parse
 from pathlib import Path
 from typing import Any, Callable, Mapping, Sequence
 
@@ -32,6 +33,19 @@ Judge = Callable[[str], str]
 
 class BudgetReached(RuntimeError):
     pass
+
+
+def host(url: str) -> str:
+    return (urllib.parse.urlparse(url).hostname or "").lower()
+
+
+def judge_key_env(url: str, explicit: str | None) -> str:
+    """The env var whose key goes to the judge. XAI_API_KEY is the default only for api.x.ai itself, so an xAI key
+    never reaches another host unless the user names it."""
+
+    if explicit is not None:
+        return explicit
+    return "XAI_API_KEY" if host(url) == "api.x.ai" else ""
 
 
 def comparable(judge_url: str, judge_model: str) -> bool:
