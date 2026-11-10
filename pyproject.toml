@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "propaganda-eval"
+version = "0.1.0"
+description = "Run Nous Research's Censorship and Propaganda Eval on any model and read the results."
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Balllvin" }]
+requires-python = ">=3.10"
+dependencies = ["tomli>=1.1; python_version < '3.11'"]
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+
+[project.scripts]
+propaganda-eval = "propaganda_eval.cli:main"
+
+[project.urls]
+Dataset = "https://huggingface.co/datasets/NousResearch/Propaganda_Eval"
+Results = "https://propaganda-eval.vercel.app"
+
+[tool.setuptools]
+packages = ["propaganda_eval"]
+
+[tool.setuptools.package-data]
+propaganda_eval = ["report_assets/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

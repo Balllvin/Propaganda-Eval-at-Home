@@ -1,0 +1,24 @@
+# A hosted OpenAI-compatible API (OpenRouter shown; OpenAI, Together, Fireworks and others work the same way).
+#   export OPENROUTER_API_KEY=...
+
+[model]
+base_url = "https://openrouter.ai/api/v1"
+model = "provider/model-name"
+api_key_env = "OPENROUTER_API_KEY"
+no_thinking_param = true   # hosted APIs do not take chat_template_kwargs
+# If the API rejects a sampling field, drop it:
+# omit_params = ["top_p"]
+# Provider switches for reasoning go here, merged into every request:
+# extra_body = { reasoning = { enabled = true } }
+# If the API hides reasoning and returns only the answer:
+# content_is_final = true
+
+[run]
+label = "my-api-model"
+profile = "published"   # thinking off, temperature 0.6: the Nous setting for open models
+runs = 1
+concurrency = 16
+seed = false
+
+[judge]
+workers = 32

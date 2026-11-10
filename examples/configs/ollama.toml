@@ -1,0 +1,17 @@
+# Ollama, LM Studio or llama.cpp server on your own machine.
+#   Ollama:     ollama serve            -> http://127.0.0.1:11434/v1
+#   LM Studio:  start the local server  -> http://127.0.0.1:1234/v1
+#   llama.cpp:  llama-server -m model.gguf --port 8080 -np 4 -c 163840   -> http://127.0.0.1:8080/v1
+# These servers may not read chat_template_kwargs; then set thinking in the model or server settings.
+
+[model]
+base_url = "http://127.0.0.1:11434/v1"
+model = "your-model:tag"
+no_thinking_param = true
+
+[run]
+label = "my-local-model"
+profile = "published"
+runs = 1
+concurrency = 4         # match the server's parallel slots
+seed = false

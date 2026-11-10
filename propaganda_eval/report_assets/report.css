@@ -1,0 +1,33 @@
+:root { --bg: #fbfbf9; --fg: #1b1b1b; --muted: #666; --line: #ddd; --panel: #fff; --accent: #b4321e; --good: #2a7a3b; }
+@media (prefers-color-scheme: dark) { :root { --bg: #111; --fg: #eaeaea; --muted: #999; --line: #333; --panel: #1a1a1a; --accent: #f06a4f; --good: #6cc27e; } }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.5 system-ui, sans-serif; }
+.wrap { max-width: 1100px; margin: 0 auto; padding: 0 16px; }
+header { padding-top: 24px; }
+h1 { font-size: 1.6rem; margin: 0 0 8px; }
+h2 { font-size: 1.2rem; margin: 32px 0 12px; }
+a { color: var(--accent); }
+.muted { color: var(--muted); font-size: .9rem; }
+.warn { border-left: 3px solid var(--accent); padding: 8px 12px; background: var(--panel); }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+.card { background: var(--panel); border: 1px solid var(--line); padding: 14px; }
+.card h3 { margin: 0 0 8px; font-size: 1rem; }
+.num { font: 600 1.8rem/1.1 ui-monospace, monospace; }
+.ci { color: var(--muted); font-size: .85rem; }
+.scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+th, td { border-bottom: 1px solid var(--line); padding: 6px 8px; text-align: right; white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; white-space: normal; }
+.filters { display: flex; flex-wrap: wrap; gap: 8px 12px; }
+.filters label { display: flex; flex-direction: column; font-size: .8rem; color: var(--muted); }
+.filters .grow { flex: 1 1 200px; }
+select, input, button { font: inherit; padding: 6px; background: var(--panel); color: var(--fg); border: 1px solid var(--line); min-height: 40px; }
+.items { list-style: none; padding: 0; margin: 0; }
+.items li { border-bottom: 1px solid var(--line); }
+details > summary { cursor: pointer; padding: 10px 0; display: flex; gap: 10px; align-items: baseline; }
+.tag { font: .8rem ui-monospace, monospace; padding: 1px 6px; border: 1px solid var(--line); white-space: nowrap; }
+.p2, .p1 { color: var(--accent); border-color: var(--accent); }
+.body { padding: 0 0 16px; }
+.body h4 { margin: 12px 0 4px; font-size: .85rem; color: var(--muted); }
+pre { white-space: pre-wrap; word-break: break-word; background: var(--panel); border: 1px solid var(--line); padding: 10px; margin: 0; font: .85rem/1.45 ui-monospace, monospace; max-height: 420px; overflow: auto; }
+#more { margin: 16px 0; }

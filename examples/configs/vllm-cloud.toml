@@ -1,0 +1,20 @@
+# A model served by vLLM (or SGLang) on a cloud GPU.
+#   vllm serve your-org/your-model --port 8000 --max-model-len 40960 --reasoning-parser <parser for your model>
+# With a reasoning parser the server returns reasoning in its own field; without one, thinking stays in the
+# content inside <think> tags. Both work. Reach the server over an SSH tunnel:
+#   ssh -N -L 8000:127.0.0.1:8000 user@your-gpu-host
+
+[model]
+base_url = "http://127.0.0.1:8000/v1"
+model = "your-org/your-model"
+# api_key_env = "VLLM_API_KEY"   # if you started vLLM with --api-key
+
+[run]
+label = "my-vllm-model"
+profile = "card"
+runs = 3
+concurrency = 64        # vLLM batches continuously; raise until throughput stops rising
+seed = false
+
+[judge]
+workers = 32

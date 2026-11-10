@@ -1,0 +1,19 @@
+# A model served on a Mac with mlx_lm (pip install mlx-lm).
+# Start the server first, for example:
+#   mlx_lm.server --model your-org/your-model --port 8080 --decode-concurrency 16
+# Check `mlx_lm.server --help` for the batching flags in your version.
+# Batching needs no per-request seed: a seeded request is decoded alone, so keep seed = false.
+
+[model]
+base_url = "http://127.0.0.1:8080/v1"
+model = "your-org/your-model"
+
+[run]
+label = "my-mlx-model"
+profile = "card"        # thinking on, temperature 1.0, top_p 0.95, 32,768 token cap
+runs = 1
+concurrency = 16        # match the server's batch size; more streams raised total throughput for us
+seed = false
+
+[judge]
+workers = 32
