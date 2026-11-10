@@ -20,7 +20,7 @@ Reference results for three small models are at https://propaganda-eval.vercel.a
 Python 3.10 or newer. Your model behind any OpenAI-compatible server on port 8080.
 
 ```bash
-pip install git+https://github.com/Balllvin/propaganda-eval
+pip install git+https://github.com/Balllvin/Propaganda-Eval-at-Home
 propaganda-eval generate --base-url http://127.0.0.1:8080/v1 --model your-model --label mine --smoke
 propaganda-eval generate --base-url http://127.0.0.1:8080/v1 --model your-model --label mine --concurrency 16
 propaganda-eval judge --label mine                       # prints the cost; add --spend --max-usd 25 to run it
